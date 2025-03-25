@@ -5,26 +5,13 @@ from data import Response
 from urls import Urls
 
 
+
 @allure.story("Создание курьера")
 class TestCourierAccountCreation:
     @allure.title('Проверка успешного создания курьера с корректными данными')
     @allure.description('Сценарий "Happy path". Проверка кода и содержимого ответа.')
-    def test_create_courier_successfully(self, valid_courier_data):
-        # Отправляем запрос для создания курьера
-        response = requests.post(Urls.URL_courier_create, data=valid_courier_data)
-        assert response.status_code == 201 and response.text == Response.RESPONSE_REGISTRATION_SUCCESSFUL
-
-        # Аутентификация курьера для получения его ID
-        login_response = requests.post(Urls.URL_courier_login, data={
-            "login": valid_courier_data["login"],
-            "password": valid_courier_data["password"]
-        })
-        assert login_response.status_code == 200
-        courier_id = login_response.json()["id"]
-
-        # Удаление курьера
-        delete_response = requests.delete(f"{Urls.URL_courier_create}{courier_id}")
-        assert delete_response.status_code == 200
+    def test_create_courier_successfully(self, create_courier):
+        pass # Логика реализовано в фикстуре
 
     @allure.title("Создание курьера с обязательными полями: логин и пароль")
     @allure.description('Проверка кода и содержимого ответа.')
@@ -36,7 +23,9 @@ class TestCourierAccountCreation:
     @allure.description('Проверка кода и содержимого ответа.')
     def test_create_courier_with_taken_login(self, valid_courier_data):
         # Создание первого курьера
-        requests.post(Urls.URL_courier_create, data=valid_courier_data)
+        response = requests.post(Urls.URL_courier_create, data=valid_courier_data)
+        assert response.status_code == 201 and response.text == Response.RESPONSE_REGISTRATION_SUCCESSFUL
+
         # Повторная попытка создания
         response = requests.post(Urls.URL_courier_create, data=valid_courier_data)
         assert response.status_code == 409 and response.json()["message"] == Response.RESPONSE_LOGIN_USED
