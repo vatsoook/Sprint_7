@@ -1,18 +1,24 @@
+from http.client import responses
+
 import allure
 import pytest
 import requests
 import data
 import helpers
 from urls import Urls
-
+import json
 
 class TestCourierAuth:
 
     @allure.title('Проверка успешной аутентификации курьера при заполнении необходимых полей')
     @allure.description('Проверяется что в ответ он получит уникальный идентификатор id')
-    def test_successful_courier_login(self, create_valid_courier):
-        login_response = requests.post(Urls.URL_courier_login, data=create_valid_courier)
+    def test_successful_courier_login(self, create_courier):
+        response_create_courier = create_courier
+        payload = json.loads(response_create_courier.request.body)
+        payload.pop('firstName')
+        login_response = requests.post(url=Urls.URL_courier_login,json=payload)
         assert login_response.status_code == 200 and login_response.json()["id"] is not None
+
 
     @allure.title('Проверка получения ошибки аутентификации курьера при вводе невалидных данных')
     @allure.description('В тест по очереди передаются наборы данных с несуществующим логином или неверным паролем. '

@@ -1,3 +1,5 @@
+from http.client import responses
+
 import allure
 import pytest
 import requests
@@ -11,7 +13,11 @@ class TestCourierAccountCreation:
     @allure.title('Проверка успешного создания курьера с корректными данными')
     @allure.description('Сценарий "Happy path". Проверка кода и содержимого ответа.')
     def test_create_courier_successfully(self, create_courier):
-        pass # Логика реализовано в фикстуре
+        # Отправляем запрос для создания курьера
+        response = create_courier
+        assert response.status_code == 201 and response.text == Response.RESPONSE_REGISTRATION_SUCCESSFUL
+
+
 
     @allure.title("Создание курьера с обязательными полями: логин и пароль")
     @allure.description('Проверка кода и содержимого ответа.')
