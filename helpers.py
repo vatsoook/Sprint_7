@@ -4,7 +4,6 @@ import allure
 import data
 
 
-
 class StringGenerator:
     @staticmethod
     #Генерирует случайную строку из букв нижнего регистра заданной длины.
