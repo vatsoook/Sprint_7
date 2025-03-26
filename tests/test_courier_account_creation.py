@@ -1,5 +1,3 @@
-from http.client import responses
-
 import allure
 import pytest
 import requests
@@ -16,7 +14,6 @@ class TestCourierAccountCreation:
         # Отправляем запрос для создания курьера
         response = create_courier
         assert response.status_code == 201 and response.text == Response.RESPONSE_REGISTRATION_SUCCESSFUL
-
 
 
     @allure.title("Создание курьера с обязательными полями: логин и пароль")

@@ -1,7 +1,6 @@
 import pytest
 import requests
 import helpers
-from data import Response
 from urls import Urls
 
 
@@ -10,7 +9,6 @@ from urls import Urls
 def valid_courier_data():
     data_courier = helpers.CourierDataGenerator()
     return data_courier.generate_random_data_courier()
-
 
 
 @pytest.fixture
@@ -33,11 +31,11 @@ def valid_courier_data_without_firstname(valid_courier_data):
 
 @pytest.fixture
 def create_courier(valid_courier_data):
-    response = requests.post(Urls.URL_courier_create, data=valid_courier_data)
+    response = requests.post(Urls.URL_courier_create, json=valid_courier_data)
 
     yield response
     # Аутентификация курьера для получения его ID
-    login_response = requests.post(Urls.URL_courier_login, data={
+    login_response = requests.post(Urls.URL_courier_login, json={
         "login": valid_courier_data["login"],
         "password": valid_courier_data["password"]
     })

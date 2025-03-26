@@ -1,9 +1,8 @@
 import random
 import string
 import allure
-import requests
 import data
-from urls import Urls
+
 
 
 class StringGenerator:
@@ -30,12 +29,6 @@ class CourierDataGenerator:
             "password": StringGenerator.generate_random_string(10),
             "firstName": StringGenerator.generate_random_string(10)
         }
-
-
-class GetOrder:
-    @allure.step('Получение списка заказов')
-    def get_orders_list(self, params=None):
-        return requests.get(Urls.URL_orders_create, params=params)
 
     @allure.step('Возвращает параметры для получения списка заказов.')
     def set_param_order_list(self):
